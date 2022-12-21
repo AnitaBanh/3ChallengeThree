@@ -11,7 +11,7 @@
 // WHEN all prompts are answered
 
 
-var length;
+var pwLength;
 var tryRunningPassword="";
 var special;
 var lowerCase;
@@ -24,23 +24,24 @@ var numericCharacters=["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 //add var for the others individually
 
-// Determine password length
+// Prompt user to choose number beteween 8 and 128. validate entry is a number in that range. var to save length
 function determinLength () {
-   length = window.prompt("How many long should the password be?");
-  if (length < 8 ) {
+  pwLength = window.prompt("How many long should the password be?");
+  if (pwLength < 8 ) {
     alert("Password length must be at least 8 characters.")
     determinLength()
-  } else if (length > 129) {
-    alert("Password length must be less than 129 characters.")
+  } else if (pwLength > 129) {
+    alert("Password length may be at most 128 characters.")
     determinLength()
-  } else if (isNaN(length)){ 
+  } else if (isNaN(pwLength)){ 
     alert("password length must be a number")
     determinLength()
   } else {alert("next, we will determine what type of characters you want in your password.")}
-  return length
+  return pwLength
 }
-// array of password parameters
-// function to confirm whether or not to include lowercase, uppercase, numeric, and/or special characters
+
+// Determine password parameters. Ask user to confirm whether or not to include lowercase, uppercase, numeric, and/or special characters.
+    // four confirm prompts
 function determineSpecialCharacters (){
   special = window.confirm("Would you like to include special characters?")
   return special
@@ -60,7 +61,8 @@ function determineNumeric (){
   numeric = window.confirm("Would you like to include numbers?")
   return numeric
 }
-// function to concatinate the parameters which the user confirmed, true. 
+// If user selects yes to include, concatinate the parameters which the user confirmed, true. 
+
 function generatePassword (){
   determinLength()
   determineSpecialCharacters()
@@ -68,7 +70,7 @@ function generatePassword (){
   determineUppercase()
   determineNumeric()
   
-// add the functions for upper case and numbers (optional if all false alert and rerun the loop of questions.)
+// (optional if user says no to all, alert and rerun the loop of questions. Validate that at least one category was chosen.)
 var passwordCharacters = ""
 if (special){
   passwordCharacters=passwordCharacters.concat(specialCharacters)
@@ -77,12 +79,13 @@ if (lowerCase){
   passwordCharacters=passwordCharacters.concat(lowerCaseCharacters)
 }
 if (upperCase){
-  passwordCharacters=passwordCharacters.concat(upperCase)
+  passwordCharacters=passwordCharacters.concat(upperCaseCharacters)
 }
 if (numeric){
-  passwordCharacters=passwordCharacters.concat(numeric)
+  passwordCharacters=passwordCharacters.concat(numericCharacters)
 }
-for(i=0; i<length; i++){
+// Decide how many elements to choose from each array. join chosen elements into a string. 
+for(i=0; i<pwLength; i++){
 tryRunningPassword=tryRunningPassword+passwordCharacters[Math.floor(Math.random() * passwordCharacters.length)]
 }
 return tryRunningPassword
